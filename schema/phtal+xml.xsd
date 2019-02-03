@@ -1,0 +1,26 @@
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://www.phtal.org/v1/XMLSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="link">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="instructions" type="instructions" minOccurs="1" maxOccurs="unbounded"/>
+        <xs:element name="partial" minOccurs="0">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:any minOccurs="1" maxOccurs="1"/>
+            </xs:sequence>
+            <xs:attribute name="profile" type="xs:anyURI" use="required"/>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute type="xs:string" name="rel" use="required"/>
+      <xs:attribute type="xs:anyURI" name="href" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="instructions"/>
+  <xs:element name="script">
+    <xs:complexType>
+      <xs:attribute type="xs:string" name="type" use="required"/>
+      <xs:attribute type="xs:anyURI" name="src" use="required"/>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
