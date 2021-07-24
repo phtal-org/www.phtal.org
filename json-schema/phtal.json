@@ -1,0 +1,122 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "$id": "http://www.phtal.org/json-schema/phtal.json",
+  "type": "object",
+  "properties": {
+    "_links": {
+      "description": "Link objects with the rels as the keys",
+      "type": "object",
+      "additionalProperties": {
+        "oneOf": [
+          {
+            "$ref": "#/definitions/linkObject"
+          },
+          {
+            "description": "An array of linkObjects under the same link relation",
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/linkObject"
+            }
+          }
+        ]
+      }
+    },
+    "_methods": {
+      "$ref": "#/definitions/instructionsByProtocol"
+    }
+  },
+  "definitions": {
+    "linkObject": {
+      "description": "An object with link information",
+      "type": "object",
+      "required": [
+        "href"
+      ],
+      "properties": {
+        "href": {
+          "type": "string",
+          "format": "uri"
+        },
+        "consumes": {
+          "type": "string",
+          "description": "A media range and paramaters that the identified resource supports as request content, formatted according to https://tools.ietf.org/html/rfc7231#section-5.3.1"
+        },
+        "produces": {
+          "type": "string",
+          "description": "A media range and paramaters that the identified resource supports as response content, formatted according to https://tools.ietf.org/html/rfc7231#section-5.3.1"
+        },
+        "requiresContent": {
+          "type": "boolean",
+          "default": false
+        },
+        "partial": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "description": "The media type of the partial representation to be included in the data field"
+            },
+            "data": {
+              "type": "object"
+            }
+          }
+        },
+        "script": {
+          "type": "object",
+          "description": null,
+          "properties": {
+            "type": {
+              "type": "string"
+            },
+            "source": {
+              "type": "string",
+              "format": "uri-reference"
+            }
+          }
+        },
+        "instructions": {
+          "$ref": "#/definitions/instructionsByProtocol"
+        }
+      }
+    },
+    "instructionsByProtocol": {
+      "description": "The keys identify the protocol and the value the instructions specific to that protocol",
+      "additionalProperties": {
+        "oneOf": [
+          {
+            "type": "object",
+            "description": "HTTP protocol instructions",
+            "properties": {
+              "parameters": {
+                "method": {
+                  "type": "string",
+                  "description": "HTTP method"
+                },
+                "security": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "https://raw.githubusercontent.com/OAI/OpenAPI-Specification/oas3-schema/schemas/v3.0/schema.yaml#/definitions/SecurityRequirement"
+                  }
+                },
+                "parameters": {
+                  "type": "array",
+                  "uniqueItems": true,
+                  "items": {
+                    "oneOf": [
+                      {
+                        "$ref": "https://raw.githubusercontent.com/OAI/OpenAPI-Specification/oas3-schema/schemas/v3.0/schema.yaml#/definitions/Parameter"
+                      },
+                      {
+                        "$ref": "https://raw.githubusercontent.com/OAI/OpenAPI-Specification/oas3-schema/schemas/v3.0/schema.yaml#/definitions/Reference"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}
